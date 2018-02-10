@@ -4,15 +4,16 @@ import { Observable } from 'rxjs'
 import  AuthAction from "../actions/authAction";
 
 import * as firebase from 'firebase';
-var config = {
-    apiKey: "AIzaSyDqPpxlIGjEikoqzvZqB7_-10158KdfxOs",
-    authDomain: "reactreduxtodoappfirebase.firebaseapp.com",
-    databaseURL: "https://reactreduxtodoappfirebase.firebaseio.com",
-    projectId: "reactreduxtodoappfirebase",
-    storageBucket: "",
-    messagingSenderId: "866095779438"
+// Initialize Firebase
+let config = {
+    apiKey: "AIzaSyDCXSyWAI-vYWnkReBmuTcDrQ7in47BHUE",
+    authDomain: "quiz-app-786.firebaseapp.com",
+    databaseURL: "https://quiz-app-786.firebaseio.com",
+    projectId: "quiz-app-786",
+    storageBucket: "quiz-app-786.appspot.com",
+    messagingSenderId: "653175294323"
   };
-firebase.initializeApp(config);
+  firebase.initializeApp(config);
 
 const ref = firebase.database().ref('/');
 const auth = firebase.auth();

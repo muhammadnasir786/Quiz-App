@@ -42,7 +42,7 @@ class AuthAction {
         }
     }
     static loginUserSuccessfully = (data)=>{
-        console.log(data,'action')
+        // console.log(data,'action')
         return {
             type : AuthAction.LOGIN_USER_SUCCESSFULLY,
             payload : data
