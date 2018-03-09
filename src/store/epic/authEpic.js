@@ -32,11 +32,11 @@ class AuthEpic {
                         userCreated = true;
                         // Action Dispatch for reducer to state change , and component render for 
                         // login OK use flages and dispatch at the bottom .map((x)=>{})
-                        alert('User Successfully Created');
+                        // alert('User Successfully Created');
                         
                     }).catch((err)=>{
                         console.log(err)
-                        alert(err.message)
+                        // alert(err.message)
                         
                     })
                 )
@@ -74,6 +74,8 @@ class AuthEpic {
                 // })
             })
         }
+       
 }
+
 
 export default AuthEpic;

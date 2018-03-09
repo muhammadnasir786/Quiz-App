@@ -21,7 +21,11 @@ const rootEpic = combineEpics(
     QAEpic.addQuiz,
     QAEpic.deleteQuiz,
     QAEpic.updateQuiz,
-    QAEpic.addImg
+    QAEpic.addImg,
+    QAEpic.updateDescription,
+    QAEpic.isAuthenticateForEdit,
+    QAEpic.addResult,
+    QAEpic.getResult
 );
 //combine reducers
 const rootReducer = combineReducers({

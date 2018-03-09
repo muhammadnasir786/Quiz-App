@@ -82,7 +82,8 @@ class RegisterCard extends React.Component {
                                 phone: this.state.phone,
                                 address: this.state.address,
                                 email: this.state.email,
-                                password: this.state.password
+                                password: this.state.password ,
+                                role : 'student'
                             }
                             this.props.creataUser(user)
                         }

@@ -48,27 +48,27 @@ class AddQuestionDialog extends React.Component {
         })
         this.setState({ open: false });
     };
-    
+
     render() {
         const actions = [
             <FlatButton
-            label="Add Question"
-            primary={true}
-            keyboardFocused={true}
-            onClick={()=>{
-                console.log(this.props.quizKey);
-                let forPayload = {
-                 questionObj : {
-                    question : this.state.question,
-                    opt1 : this.state.opt1,
-                    opt2 : this.state.opt3,
-                    opt3 : this.state.opt3,
-                    ans : this.state.ans 
-                } ,
-                quizKey : this.props.quizKey
-            }
-                this.props.addQuestion(forPayload)
-                this.setState({ open: false });
+                label="Add Question"
+                primary={true}
+                keyboardFocused={true}
+                onClick={() => {
+                    console.log(this.props.quizKey);
+                    let forPayload = {
+                        questionObj: {
+                            question: this.state.question,
+                            opt1: this.state.opt1,
+                            opt2: this.state.opt2,
+                            opt3: this.state.opt3,
+                            ans: this.state.ans
+                        },
+                        quizKey: this.props.quizKey
+                    }
+                    this.props.addQuestion(forPayload)
+                    this.handleClose();
                 }}
             />,
             <FlatButton
@@ -106,14 +106,13 @@ class AddQuestionDialog extends React.Component {
                     /><br />
                     <SelectField
                         // floatingLabelText="Frequency"
-                        value={this.state.value}
+                        value={this.state.ans}
                         onChange={(event, index, value) => this.setState({ ans: value })}
                     >
                         <MenuItem selected disabled={true} primaryText="Select Correct Answer" />
-                        <MenuItem value={1} primaryText="Option 1" />
-                        <MenuItem value={2} primaryText="OPtion 2" />
-                        <MenuItem value={3} primaryText="Option 3" />
-
+                        <MenuItem value={this.state.opt1} primaryText="Option 1" />
+                        <MenuItem value={this.state.opt2} primaryText="Option 2" />
+                        <MenuItem value={this.state.opt3} primaryText="Option 3" />
                     </SelectField>
                 </Dialog>
             </div>

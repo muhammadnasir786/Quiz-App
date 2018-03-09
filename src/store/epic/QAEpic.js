@@ -7,6 +7,8 @@ import * as firebase from "firebase";
 let userRef = firebase.database().ref('/users');
 let quizRef = firebase.database().ref('/quizs');
 let questionRef = firebase.database().ref('/quizs/questions')
+let resultRef = firebase.database().ref('/result');
+
 
 export default class QAEpic {
 
@@ -50,13 +52,13 @@ export default class QAEpic {
                         console.log(s.val(), s.key)
                         observer.next({
                             type: QAAction.GET_QUIZ_DELETE,
-                            quizData: s.key
+                            payload: s.key
                         })
                     })
                     quizRef.on('child_changed', (s) => {
                         console.log(s.val(), s.key)
                         // alert('child_changed')
-                        alert('question add')
+                        // alert('question add')
                         observer.next({
                             type: QAAction.GET_QUIZ_UPDATE,
                             payload: {
@@ -66,6 +68,24 @@ export default class QAEpic {
                         })
                     })
 
+                }).takeUntil(action$.ofType('LOGOUT'));
+            })
+    }
+    static getResult = (action$) => {
+        return action$.ofType(QAAction.GET_RESULT)
+            .switchMap(({
+                payload
+            }) => {
+                return new Observable((observer) => {
+                    firebase.database().ref('result/').on('child_added', (s) => {
+                        observer.next({
+                            type: QAAction.GET_RESULT_ADD,
+                            payload: {
+                                key: s.key,
+                                resultData: s.val()
+                            }
+                        })
+                    })
                 }).takeUntil(action$.ofType('LOGOUT'));
             })
     }
@@ -106,7 +126,6 @@ export default class QAEpic {
                 }).takeUntil(action$.ofType('LOGOUT'));
             })
     }
-
     static addQuiz = (action$) => {
         return action$.ofType(QAAction.ADD_QUIZ)
             .switchMap(({
@@ -114,9 +133,48 @@ export default class QAEpic {
             }) => {
                 // console.log(payload)
                 return Observable.fromPromise(
-                    quizRef.push(payload).then(() => {
-                        alert('Quiz Created Successfully')
+                    quizRef.push().child('description/').set(payload).then(() => {
+                        // alert('Quiz Created Successfully')
+                    }).catch(()=>{
+                        console.log('erre');
                     })
+                )
+                    .map((x) => {
+                        return {
+                            type: null
+                        }
+                    })
+            })
+    }
+    static addResult = (action$) => {
+        return action$.ofType(QAAction.ADD_RESULT)
+            .switchMap(({
+                payload
+            }) => {
+                console.log(payload)
+                return Observable.fromPromise(
+                    firebase.database().ref('result/').push(payload).then(() => {
+                        alert('Result  Successfully')
+                    }).catch(()=>{
+                        console.log('erre');
+                    })
+                )
+                    .map((x) => {
+                        return {
+                            type: null
+                        }
+                    })
+            })
+    }
+    static updateDescription = (action$) => {
+        // alert('asnias')
+        return action$.ofType(QAAction.UPDATE_DESCRIPTION)
+            .switchMap(({
+                payload
+            }) => {
+                console.log(payload)
+                return Observable.fromPromise(
+                    quizRef.child(`${payload.quizKey}/description/`).set(payload.description)
                 )
                     .map((x) => {
                         return {
@@ -166,7 +224,7 @@ export default class QAEpic {
                 console.log(payload)
                 return Observable.fromPromise(
                     quizRef.child(`${payload.quizKey}/questions/`).push(payload.questionObj).then(() => {
-                        alert('Question Created Successfully')
+                        // alert('Question Created Successfully')
                     })
                 )
                     .map((x) => {
@@ -183,7 +241,7 @@ export default class QAEpic {
             }) => {
                 // console.log('Nasir')
                 return Observable.fromPromise(
-                    quizRef.child(`/${payload}/`).set(null)
+                    quizRef.child(`/${payload.quizKey}/questions/${payload.questionKey}/`).set(null)
                 )
                     .map((x) => {
                         return {
@@ -200,7 +258,7 @@ export default class QAEpic {
             }) => {
                 console.log(payload)
                 return Observable.fromPromise(
-                    quizRef.child(`${payload.key}`).set(payload.quizData)
+                    quizRef.child(`${payload.quizKey}/questions/${payload.questionKey}/`).set(payload.questionObj)
                 )
                     .map((x) => {
                         return {
@@ -220,7 +278,7 @@ export default class QAEpic {
                        img : res.downloadURL
                    }
                    console.log(payload);
-                   
+                //    console.log(res.downloadURL);
                     // console.log(msg);
                     // this.props.addImg(this.state.img);
                     // console.log(res.downloadURL);
@@ -232,9 +290,29 @@ export default class QAEpic {
             // })
         })
     }
+    static isAuthenticateForEdit = (action$)=>{
+        return action$.ofType(QAAction.IS_AUTHENTICATE_FOR_EDIT)
+        .switchMap(({payload })=>{
+            return Observable.fromPromise(
+                firebase.auth().signInWithEmailAndPassword(payload.email,payload.password)
+                .then((res)=>{
+                    return {type : QAAction.GET_IS_AUTHENTICATE_FOR_EDIT_ADD }
+                }).catch((err)=>{
+                    // alert(err.message)
+                    return {type : null};
+                })
+            )
+            // .map((x)=>{
+            //     return { type : AuthAction.LOGIN_USER_SUCCESSFULLY }
+            //     // return   authenticate ? AuthAction.loginUserSuccessfully(userData) : {type : null}
+            // })
+        })
+    }
     
 
 
 
 
 }
+
+// console.log('nASIR');

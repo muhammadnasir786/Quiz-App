@@ -65,7 +65,7 @@ class MyQuiz extends Component {
                       return  <List style={{ padding : 10}}>
                         <Card style={{ margin: '0px' }}>
                             <ListItem
-                                leftAvatar={<Avatar src={oneQuiz.img} />}
+                                leftAvatar={<Avatar src={oneQuiz.description.img} />}
                                 rightIconButton={
                                     // Right Icon Button 
                                     <IconMenu iconButtonElement={
@@ -89,12 +89,14 @@ class MyQuiz extends Component {
                                     
                                     // Right Icon Button End 
                                 }
-                                primaryText={oneQuiz.title}
+                                primaryText={oneQuiz.description.title}
                                 secondaryText={
-                                    <p>{oneQuiz.description}</p>
+                                    <p>{oneQuiz.description.description}</p>
                                 }
                                 secondaryTextLines={2}
-                            /></Card>
+                            />
+                            
+                            </Card>
                             {/* {console.log('asdasd')} */}
                     </List>
                     })
